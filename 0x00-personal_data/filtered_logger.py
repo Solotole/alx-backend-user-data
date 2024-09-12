@@ -2,7 +2,7 @@
 """Basic Regex-ing"""
 import re
 import logging
-from typing import List
+from typing import List, Optional, Tuple
 
 
 def filter_datum(
@@ -30,7 +30,11 @@ class RedactingFormatter(logging.Formatter):
 
     def format(self, record: logging.LogRecord) -> str:
         """formating method"""
-        filter_string: str = filter_datum(self.fields, self.REDACTION, record.getMessage(), self.SEPARATOR)
-        # print(filter_string)
+        filter_string: str = filter_datum(
+                                        self.fields,
+                                        self.REDACTION,
+                                        record.getMessage(),
+                                        self.SEPARATOR
+                                        )
         record.msg: str = filter_string
         return super().format(record)
