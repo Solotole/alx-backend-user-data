@@ -6,6 +6,7 @@ from typing import List, Optional, Tuple
 import mysql.connector
 from mysql.connector import connection
 import os
+from filtered_logger import get_db, get_logger
 
 PII_FIELDS = ("name", "email", "phone", "ssn", "password")
 
@@ -72,3 +73,25 @@ def get_db() -> Optional[connection.MySQLConnection]:
         database=db
     )
     return connection
+
+
+def main() -> None:
+    """Main function that retrieves all rows
+    in the users table and logs each row.
+    """
+    logger = get_logger()
+    db: MySQLConnection = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT name, email, phone, ssn, password, ip, last_login, user_agent FROM users;")
+    
+    for row in cursor.fetchall():
+        row_str = f"name={row[0]}; email={row[1]}; phone={row[2]}; ssn={row[3]}; " \
+                  f"password={row[4]}; ip={row[5]}; last_login={row[6]}; user_agent={row[7]};"
+        filtered_row = filter_datum(FIELDS, "***", row_str, "; ")
+        logger.info(filtered_row)
+    cursor.close()
+    db.close()
+
+
+if __name__ == "__main__":
+    main()
