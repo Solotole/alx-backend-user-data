@@ -41,6 +41,7 @@ class RedactingFormatter(logging.Formatter):
         record.msg: str = filter_string
         return super().format(record)
 
+
 def get_logger() -> logging.Logger:
     """Create and return a logger that handles PII."""
     logger: logging.Logger = logging.getLogger("user_data")
