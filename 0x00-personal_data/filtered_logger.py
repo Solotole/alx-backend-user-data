@@ -1,7 +1,8 @@
-#!/usr/bin/env python3
-"""Regex-ing an input"""
+#!/usr/bin/python3
+"""Basic Regex-ing"""
 import re
 
 def filter_datum(fields, redaction, message, separator):
-    """function that returns the log message obfuscated"""
-    return re.sub(r'({})=[^{}]*'.format('|'.join(fields), separator), r'\1={}'.format(redaction), message)
+  """Filters a log message by obfuscating specified fields."""
+  pattern = rf"(?:{separator})({'|'.join(fields)})=([^;]+)"
+  return re.sub(pattern, rf"\1={redaction}", message)
