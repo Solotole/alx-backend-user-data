@@ -85,13 +85,15 @@ def main() -> None:
     string += "ip, last_login, user_agent FROM users;"
     cursor.execute(string)
     for row in cursor.fetchall():
-        row_str = f"name={row[0]}; email={row[1]}; phone={row[2]}; ssn={row[3]}; " \
-                  f"password={row[4]}; ip={row[5]}; last_login={row[6]}; user_agent={row[7]};"
+        row_str = (
+            f"name={row[0]}; email={row[1]}; phone={row[2]}; ssn={row[3]}; "
+            f"password={row[4]}; ip={row[5]}; last_login={row[6]}; "
+            f"user_agent={row[7]};"
+        )
         filtered_row = filter_datum(FIELDS, "***", row_str, "; ")
         logger.info(filtered_row)
     cursor.close()
     db.close()
-
 
 
 if __name__ == "__main__":
