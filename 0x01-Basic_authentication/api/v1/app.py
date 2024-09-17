@@ -7,6 +7,7 @@ from api.v1.views import app_views
 from flask import Flask, jsonify, abort, request
 from flask_cors import (CORS, cross_origin)
 import os
+from typing import List, optional
 
 
 app = Flask(__name__)
@@ -21,9 +22,11 @@ if auth:
 
 @app.before_request
 def before_request_handler():
+    """method to run before any request
+    """
     if auth is None:
         return
-    excluded_paths = [
+    excluded_paths: List[str] = [
         '/api/v1/status/',
         '/api/v1/unauthorized/',
         '/api/v1/forbidden/'
