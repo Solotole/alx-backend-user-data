@@ -31,3 +31,10 @@ def page_authorized():
     """anauthorized route endpoint
     """
     abort(401)
+
+
+@app_views.route('/forbidden/', strict_slashes=False)
+def forbidden_access():
+    """forbidden access route endpoint
+    """
+    abort(403)
