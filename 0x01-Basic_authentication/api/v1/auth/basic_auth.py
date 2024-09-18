@@ -46,10 +46,12 @@ class BasicAuth(Auth):
         self, decoded_base64_authorization_header: str
     ) -> Tuple[Optional[str], Optional[str]]:
         """
-        Extracts user email and password from the Base64 decoded string.
+        Extracts user email and password from the Base64
         """
-        deco = decoded_base64_authorization_header
-        if deco is None or not isinstance(deco, str):
+        if (
+            decoded_base64_authorization_header is None or
+            not isinstance(decoded_base64_authorization_header, str)
+        ):
             return None, None
         split_credentials = decoded_base64_authorization_header.split(':', 1)
         if len(split_credentials) != 2:
