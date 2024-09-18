@@ -42,25 +42,20 @@ class BasicAuth(Auth):
         except binascii.Error:
             return None
 
-    def extract_user_credentials(self, decoded_base64_authorization_header: str) -> Tuple[Optional[str], Optional[str]]:
-    """
-    Extracts user email and password from the Base64 decoded string.
-
-    Args:
-        decoded_base64_authorization_header (str): Decoded Base64 string in the format "email:password".
-
-    Returns:
-        Tuple[str, str]: A tuple of (email, password) if the format is correct, otherwise (None, None).
-    """
-    if decoded_base64_authorization_header is None or not isinstance(decoded_base64_authorization_header, str):
-        return None, None
-    split_credentials = decoded_base64_authorization_header.split(':', 1)
-    if len(split_credentials) != 2:
-        return None, None
-
-    user_email, user_pwd = split_credentials[0], split_credentials[1]
-    
-    return user_email, user_pwd
+    def extract_user_credentials(
+        self, decoded_base64_authorization_header: str
+    ) -> Tuple[Optional[str], Optional[str]]:
+        """
+        Extracts user email and password from the Base64 decoded string.
+        """
+        deco = decoded_base64_authorization_header
+        if deco is None or not isinstance(deco, str):
+            return None, None
+        split_credentials = decoded_base64_authorization_header.split(':', 1)
+        if len(split_credentials) != 2:
+            return None, None
+        user_email, user_pwd = split_credentials[0], split_credentials[1]
+        return user_email, user_pwd
 
     def user_object_from_credentials(
         self, user_email: str, user_pwd: str
