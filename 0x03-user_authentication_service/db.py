@@ -56,13 +56,18 @@ class DB:
         except Exception:
             raise NoResultFound
 
-    def update_user(self, user_id, **kwargs) -> None:
+    def update_user(self, user_id: int, **kwargs) -> None:
         """updating user credentials based on user_id
         """
-        find_user: User = self.find_user_by(id=user_id)
-        if not find_user or any(x not in VALID_FIELDS for x in kwargs):
+        try:
+            find_user: User = self.find_user_by(id=user_id)
+            for key in kwargs.keys():
+                if key not in VALID_FIELDS:
+                    raise ValueError
+            for key, value in kwargs.items():
+                if not hasattr(find_user, key):
+                    raise ValueError(f"User has no attribute '{key}'")
+                setattr(find_user, key, value)
+            self._session.commit()
+        except Exception:
             raise ValueError
-        for key, value in kwargs.items():
-            setattr(find_user, key, value)
-        self._session.commit()
-        return None
