@@ -43,12 +43,12 @@ class DB:
 
     def find_user_by(self, **kwargs) -> User:
         """querying and returning id or error otherwise"""
-        try:
-            user = self._session.query(User).filter_by(**kwargs).first()
-            if user is None:
-                raise NoResultFound
-            return user
-        except NoResultFound:
-            raise NoResultFound('Not found')
-        except InvalidRequestError:
-            raise InvalidRequestError("Invalid")
+        query = self._session.query(User)
+        for key, value in kwargs.items():
+            if not hasattr(User, key):
+                raise InvalidRequestError(f"Invalid argument: {key}")
+            query = query.filter(getattr(User, key) == value)
+        user = query.first()
+        if not user:
+            raise NoResultFound
+        return user
