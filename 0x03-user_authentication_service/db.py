@@ -61,19 +61,10 @@ class DB:
     def update_user(self, user_id: int, **kwargs) -> None:
         """updating user credentials based on user_id
         """
-        try:
-            find_user: User = self.find_user_by(id=user_id)
-            # for key in kwargs.keys():
-            # if key not in VALID_FIELDS:
-            # raise ValueError
-            for key, value in kwargs.items():
-                if not hasattr(find_user, key):
-                    raise ValueError(f"User has no attribute '{key}'")
-                setattr(find_user, key, value)
-            self._session.commit()
-        except NoResultFound:
-            raise ValueError(f"User with id {user_id} not found")
-        except InvalidRequestError:
-            raise ValueError("Invalid request")
-        except Exception:
-            raise ValueError('')
+        user = self.find_user_by(id=user_id)
+        for key, value in kwargs.items():
+            if hasattr(User, key):
+                setattr(user, key, value)
+            else:
+                raise ValueError(f"Attribute '{key}' does not correspond to a user attribute")
+        self._session.commit()
