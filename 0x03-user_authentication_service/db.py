@@ -48,13 +48,15 @@ class DB:
 
     def find_user_by(self, **kwargs) -> User:
         """querying and returning id or error otherwise"""
-        if not kwargs or any(x not in VALID_FIELDS for x in kwargs):
-            raise InvalidRequestError
-        session = self._session
         try:
-            return session.query(User).filter_by(**kwargs).one()
-        except Exception:
-            raise NoResultFound
+            user = self._session.query(User).filter_by(**kwargs).first()
+            if user is None:
+                raise NoResultFound
+            return user
+        except NoResultFound:
+            raise
+        except InvalidRequestError:
+            raise InvalidRequestError("Invalid query arguments")
 
     def update_user(self, user_id: int, **kwargs) -> None:
         """updating user credentials based on user_id
