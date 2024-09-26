@@ -22,7 +22,8 @@ def _hash_password(password: str) -> bytes:
 def _generate_uuid(self) -> str:
     """generating a unique id using uuid module and returning it
     """
-    unique = str(uuid4())
+    unique: str = str(uuid4())
+    return unique
 
 
 class Auth:
