@@ -53,5 +53,5 @@ class Auth:
     def _generate_uuid(self) -> str:
         """generating a unique id using uuid module and returning it
         """
-        unique = uuid4()
+        unique = str(uuid4())
         return unique
