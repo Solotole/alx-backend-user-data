@@ -46,7 +46,7 @@ class DB:
         query = self._session.query(User)
         for key, value in kwargs.items():
             if not hasattr(User, key):
-                raise InvalidRequestError(f"Invalid argument: {key}")
+                raise InvalidRequestError
             query = query.filter(getattr(User, key) == value)
         user = query.first()
         if not user:
