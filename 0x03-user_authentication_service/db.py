@@ -11,6 +11,9 @@ from user import User
 
 from user import Base
 
+VALID_FIELDS = ['id', 'email', 'hashed_password', 'session_id',
+                'reset_token']
+
 
 class DB:
     """DB class
@@ -36,6 +39,8 @@ class DB:
     def add_user(self, email: str, hashed_password: str) -> User:
         """adding a new user into the database
         """
+        if not email or not hashed_password:
+            return
         new_user = User(email=email, hashed_password=hashed_password)
         self._session.add(new_user)
         self._session.commit()
@@ -43,12 +48,10 @@ class DB:
 
     def find_user_by(self, **kwargs) -> User:
         """querying and returning id or error otherwise"""
-        query = self._session.query(User)
-        for key, value in kwargs.items():
-            if not hasattr(User, key):
-                raise InvalidRequestError
-            query = query.filter(getattr(User, key) == value)
-        user = query.first()
-        if not user:
+        if not kwargs or any(x not in VALID_FIELDS for x in kwargs):
+            raise InvalidRequestError
+        session = self._session
+        try:
+            return session.query(User).filter_by(**kwargs).one()
+        except Exception:
             raise NoResultFound
-        return user
