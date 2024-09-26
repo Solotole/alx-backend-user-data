@@ -69,5 +69,9 @@ class DB:
                     raise ValueError(f"User has no attribute '{key}'")
                 setattr(find_user, key, value)
             self._session.commit()
+        except NoResultFound:
+            raise ValueError(f"User with id {user_id} not found")
+        except InvalidRequestError:
+            raise ValueError("Invalid request")
         except Exception:
             raise ValueError
