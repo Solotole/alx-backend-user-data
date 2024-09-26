@@ -16,7 +16,7 @@ def home_route():
 
 
 @app.route('/users', methods=['POST'])
-def users():
+def users() -> str:
     """registering a user if not existing
     and if otherwise acknowledges it
     """
