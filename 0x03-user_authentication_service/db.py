@@ -10,7 +10,6 @@ from sqlalchemy.orm.session import Session
 from user import User, Base
 
 
-
 VALID_FIELDS = ['id', 'email', 'hashed_password', 'session_id',
                 'reset_token']
 
