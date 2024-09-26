@@ -60,7 +60,7 @@ class DB:
         """updating user credentials based on user_id
         """
         find_user: User = self.find_user_by(id=user_id)
-        if not find_user:
+        if not find_user or any(x not in VALID_FIELDS for x in kwargs):
             raise ValueError
         for key, value in kwargs.items():
             setattr(find_user, key, value)
