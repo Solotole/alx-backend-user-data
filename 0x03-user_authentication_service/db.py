@@ -61,9 +61,9 @@ class DB:
         """
         try:
             find_user: User = self.find_user_by(id=user_id)
-            for key in kwargs.keys():
-                if key not in VALID_FIELDS:
-                    raise ValueError
+            # for key in kwargs.keys():
+            # if key not in VALID_FIELDS:
+            # raise ValueError
             for key, value in kwargs.items():
                 if not hasattr(find_user, key):
                     raise ValueError(f"User has no attribute '{key}'")
@@ -74,4 +74,4 @@ class DB:
         except InvalidRequestError:
             raise ValueError("Invalid request")
         except Exception:
-            raise ValueError
+            raise ValueError('')
