@@ -90,8 +90,7 @@ class Auth:
             return
         try:
             user = self._db.find_user_by(id=user_id)
-            user['id'] = None
-            return None
+            self._db.update_user(user.id, session_id=None)
         except Exception:
             return None
         return None
