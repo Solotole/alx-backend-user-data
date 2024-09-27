@@ -2,6 +2,7 @@
 """Flask app development
 """
 from flask import Flask, jsonify, request
+from flask import abort
 from auth import Auth
 
 AUTH: Auth = Auth()
