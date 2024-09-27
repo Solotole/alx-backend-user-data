@@ -53,15 +53,14 @@ def login():
 def logout():
     """function to delete a user id from a session
     """
-    session = request.cookie['session_id']
+    session = request.cookies.get('session_id')
     if not session:
         abort(403)
     user = AUTH.get_user_from_session_id(session)
-    if user:
-        AUTH.destroy_session(user.id)
-        return redirect('/')
     if not user:
         abort(403)
+    AUTH.destroy_session(user.id)
+    return redirect('/')
 
 
 if __name__ == "__main__":
