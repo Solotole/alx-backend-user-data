@@ -19,7 +19,7 @@ def _hash_password(password: str) -> bytes:
     return hash_password
 
 
-def _generate_uuid(self) -> str:
+def _generate_uuid() -> str:
     """generating a unique id using uuid module and returning it
     """
     unique: str = str(uuid4())
@@ -56,3 +56,19 @@ class Auth:
                 return False
         except NoResultFound:
             return False
+
+    def create_session(self, email):
+        try:
+            user = self._db.find_user_by(email=email)
+            session_id = _generate_uuid()
+            self._db.update_user(user.id, session_id=session_id)
+            return session_id
+        except Exception:
+            return None
+        # return None
+        # user = self._db.get(email)
+        # if user:
+        # ession_id = self._generate_uuid()
+        # self._db[email]['session_id'] = session_id
+        # return session_id
+        # return None
