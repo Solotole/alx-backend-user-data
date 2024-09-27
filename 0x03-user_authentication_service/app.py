@@ -49,7 +49,7 @@ def login():
     return response
 
 
-@app.route('/session', methods=['DELETE'])
+@app.route('/sessions', methods=['DELETE'])
 def logout():
     """function to delete a user id from a session
     """
