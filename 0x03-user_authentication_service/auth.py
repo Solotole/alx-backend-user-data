@@ -102,5 +102,5 @@ class Auth:
         except NoResultFound:
             raise ValueError
         unique: str = _generate_uuid()
-        user['reset_token'] = unique
+        self._db.update_user(user.id, reset_token=unique)
         return unique
