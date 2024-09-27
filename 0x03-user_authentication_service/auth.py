@@ -104,3 +104,13 @@ class Auth:
         unique: str = _generate_uuid()
         self._db.update_user(user.id, reset_token=unique)
         return unique
+
+    def update_password(reset_token: str, password: str) -> None:
+        """Update password and making reset_token None"""
+        user = self._db.find_user_by(reset_token=reset_token)
+        if not user:
+            raise ValueError
+        hashed = _hash_password(password)
+        user['hashed_password'] = hashed
+        user['reset_token'] = None
+        return None
