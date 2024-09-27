@@ -59,6 +59,7 @@ class Auth:
             return False
 
     def create_session(self, email: str) -> Union[str, None]:
+        """creating a session"""
         try:
             user = self._db.find_user_by(email=email)
             session_id = _generate_uuid()
@@ -66,10 +67,18 @@ class Auth:
             return session_id
         except Exception:
             return None
-        # return None
-        # user = self._db.get(email)
-        # if user:
-        # ession_id = self._generate_uuid()
-        # self._db[email]['session_id'] = session_id
-        # return session_id
-        # return None
+
+    def get_user_from_session_id(self, session_id: str) -> Union[User, None]:
+        """Find user by session ID.
+        Args:
+            session_id: string session ID.
+        Returns:
+            User object if found, None otherwise.
+        """
+        if session_id is None:
+            return None
+        try:
+            user = self._db.find_user_by(session_id=session_id)
+        except Exception:
+            return None
+        return user
