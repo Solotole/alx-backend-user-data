@@ -49,5 +49,18 @@ def login():
     return response
 
 
+@app.route('/session', methods=['DELETE'])
+def logout():
+    """function to delete a user id from a session
+    """
+    session = request.cookie['session_id']
+    user = AUTH.get_user_from_session_id(session)
+    if user:
+        AUTH.destroy_session(user.id)
+        return redirect('home_route')
+    if not user:
+        abort(403)
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000")
