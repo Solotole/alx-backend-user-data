@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Flask app development
 """
-from flask import Flask, jsonify, request
+from flask import Flask, redirect, jsonify, request
 from flask import abort
 from auth import Auth
 
@@ -54,10 +54,12 @@ def logout():
     """function to delete a user id from a session
     """
     session = request.cookie['session_id']
+    if not session:
+        abort(403)
     user = AUTH.get_user_from_session_id(session)
     if user:
         AUTH.destroy_session(user.id)
-        return redirect('home_route')
+        return redirect('/')
     if not user:
         abort(403)
 
